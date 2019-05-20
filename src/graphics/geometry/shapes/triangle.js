@@ -23,9 +23,9 @@ class Triangle extends Geometry {
    generateTriangleVertices(x, y, red, green, blue, size) {
        var vertices = []
  
-       var vertex1 = new Vertex(x-(0.25*size), y-(0.25*size), 0.0, red, green, blue);
-       var vertex2 = new Vertex(x+(0.25*size), y-(0.25*size), 0.0, red, green, blue);
-       var vertex3 = new Vertex(x, y+(0.25*size), 0.0, red, green, blue);
+       var vertex1 = new Vertex(x-size, y-size, 0.0, red, green, blue);
+       var vertex2 = new Vertex(x+size, y-size, 0.0, red, green, blue);
+       var vertex3 = new Vertex(x, y+size, 0.0, red, green, blue);
  
        vertices.push(vertex1);
        vertices.push(vertex2);

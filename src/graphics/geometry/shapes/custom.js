@@ -1,20 +1,6 @@
-/**
- * Specifies the geometry contained within an OBJ file. A subclass of Geometry.
- * NOTE: The geometry is transformed to display correctly using its modelMatrix.
- *
- * @author Alfredo Rivero
- * @this {LoadedOBJ}
- */
+
 class CustomOBJ extends Geometry {
-   /**
-    * Constructor for LoadedOBJ
-    *
-    * @constructor
-    * @param {String} objStr An OBJ file in string form
-    * @param imgPath An optional file path/data url for an image file
-    * @param color An optional color object with r,g,b,a components
-    * @returns {LoadedOBJ} Constructed LoadedOBJ
-    */
+
    constructor(shader, objStr, image) {
      super(shader);
      this.image = image;
@@ -187,10 +173,9 @@ class CustomOBJ extends Geometry {
    }
  
    render(){
-     let rotateM = new Matrix4();
-     rotateM.setRotate(-1, 0, 1, 0);
-     this.modelMatrix = rotateM.multiply(this.modelMatrix);
- 
+     let rotateMatrix = new Matrix4();
+     rotateMatrix.setRotate(-1, 0, 1, 0);
+     this.modelMatrix = rotateMatrix.multiply(this.modelMatrix);
      this.shader.setUniform('u_ModelMatrix', this.modelMatrix.elements);
    }
  }
