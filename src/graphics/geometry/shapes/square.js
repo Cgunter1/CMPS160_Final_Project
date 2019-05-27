@@ -16,6 +16,8 @@ class Square extends Geometry {
        var vertex4 = new Vertex(x+size,  y, z, red, green, blue);
        var vertex5 = new Vertex(x, y, z-size, red, green, blue);
        var vertex6 = new Vertex(x+size, y, z-size, red, green, blue);
+
+
  
        vertices.push(vertex1);
        vertices.push(vertex2);

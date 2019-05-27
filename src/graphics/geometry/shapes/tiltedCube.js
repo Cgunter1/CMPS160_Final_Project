@@ -30,6 +30,7 @@ class tiltedCube extends Geometry {
         var vertex1 = new Vertex(x, y, z, 0, 0, 0);
         var vertex2 = new Vertex(x, y+size, z, 0, 0, 0);
         var vertex3 = new Vertex(x+size,  y, z, 0, 0, 0);
+
         var vertex4 = new Vertex(x, y+size, z, 0, 0, 0);
         var vertex5 = new Vertex(x+size,  y, z, 0, 0, 0);
         var vertex6 = new Vertex(x+size, y+size, z, 0, 0, 0);
@@ -37,6 +38,7 @@ class tiltedCube extends Geometry {
         var vertex7 = new Vertex(x+size, y+size, z, 0, 0, 0);
         var vertex8 = new Vertex(x, y+size, z, 0, 0, 0);
         var vertex9 = new Vertex(x, y+size, z-size, 0, 0, 0);
+        
         var vertex10 = new Vertex(x+size, y+size, z, 0, 0, 0);
         var vertex11 = new Vertex(x, y+size, z-size, 0, 0, 0);
         var vertex12 = new Vertex(x+size, y+size, z-size, 0, 0, 0);
@@ -72,6 +74,7 @@ class tiltedCube extends Geometry {
         vertex1.texCoord = [0,0];
         vertex2.texCoord = [0,1];
         vertex3.texCoord = [1,0];
+        
         vertex4.texCoord = [0,1];
         vertex5.texCoord = [1,0];
         vertex6.texCoord = [1,1];

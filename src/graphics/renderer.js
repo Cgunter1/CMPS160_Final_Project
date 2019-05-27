@@ -44,22 +44,17 @@ class Renderer {
      * Renders all the geometry within the scene.
      */
     render() {
-        // Clear the geometry onscreen
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
         for (var i = 0; i < this.scene.geometries.length; i++) {
             var geometry = this.scene.geometries[i];
 
-            // Switch to shader attached to geometry
             this.gl.useProgram(geometry.shader.program)
             this.gl.program = geometry.shader.program
 
             geometry.shader.setUniform("u_ViewMatrix", this.camera.viewMatrix.elements);
             geometry.shader.setUniform("u_ProjectionMatrix", this.camera.projectionMatrix.elements);
 
-
-            // Callback function in the case user wants to change the
-            // geometry before the draw call
             geometry.render();
             if(geometry.image != null) {
                 if(!(geometry.image.src in this.textures)) {

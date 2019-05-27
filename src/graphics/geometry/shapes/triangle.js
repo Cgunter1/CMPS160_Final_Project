@@ -16,7 +16,6 @@ class Triangle extends Geometry {
        super(shader);
        this.vertices = this.generateTriangleVertices(x, y, red, green, blue, size);
        this.faces = {0: this.vertices};
-       // CALL THIS AT THE END OF ANY SHAPE CONSTRUCTOR
        this.interleaveVertices();
    }
  
