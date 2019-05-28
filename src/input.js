@@ -29,8 +29,11 @@ class InputHandler {
          case "d":
             break
          case "w":
+         this.camera.dolly(1);
+         
             break
          case "s":
+         this.camera.dolly(-1);
             break
          case "z":
             break

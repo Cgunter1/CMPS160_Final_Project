@@ -48,10 +48,15 @@ function begin() {
       _inputHandler.image = walls;
       generateWalls(walls);
    };
+
+
+
    walls.src = "objs/redbrick.jpg";
+
+
+
    var sky = new Image();
    sky.src = "objs/sky.jpg";
-
 
    sky.onload = function () {
       _inputHandler.image = sky;
@@ -62,18 +67,30 @@ function begin() {
    _inputHandler.scene.addGeometry(ground);
 
 
-
-   // canvas = document.getElementById("webgl");
-   // var gl = getWebGLContext(canvas);
-   // shader = new Shader(gl, ASG0_VSHADER, ASG0_FSHADER);
-   // shader.addAttribute("a_Position");
-   // shader.addAttribute("a_Color");
-   // var shape = new Circle(shader, -0.195, 0.375, 0.5, 0.5, 0.5, 1);
-   // _inputHandler.scene.addGeometry(shape);
+   var ground = new Square(shaderOld, 0, 0.001, 0, 34, 139, 50, size);
+   _inputHandler.scene.addGeometry(ground);
 
 
-   var rect = new Rectangle(shaderOld, 12.6, -1.3, -18.3, 125, 125, 125, 10);
-   _inputHandler.scene.addGeometry(rect);
+
+
+   var dashboard = new Image();
+   dashboard.src = "objs/dashboardedited.jpg";
+
+
+   dashboard.onload = function () {
+      _inputHandler.image = dashboard;
+      // var shape = new tiltedCube(shaderNew, -.0001, -.0001, 0, null, null, null, size, sky);
+      // _inputHandler.scene.addGeometry(shape);
+      var rect = new Rectangle(shaderNew, 12.6, -1.3, -18.3, 125, 125, 125, 10, dashboard);
+      _inputHandler.scene.addGeometry(rect);
+   };
+  
+
+
+
+ 
+
+  
 
 
    var circ = new Circle(shaderOld, 14.5, 0.65, -18.2, 255, 125, 0, 5);

@@ -63,10 +63,11 @@ class Renderer {
                     this.loadTexture(this.textures[geometry.image.src], geometry.image);
                 }
                 else {
-		                // Enable texture unit0
-		                this.gl.activeTexture(this.gl.TEXTURE0);
-		                // Bind the texture object to the target
-		                this.gl.bindTexture(this.gl.TEXTURE_2D, this.textures[geometry.image.src]);
+                     this.loadTexture(this.textures[geometry.image.src], geometry.image);
+		               //  // Enable texture unit0
+		               //  this.gl.activeTexture(this.gl.TEXTURE0);
+		               //  // Bind the texture object to the target
+		               //  this.gl.bindTexture(this.gl.TEXTURE_2D, this.textures[geometry.image.src]);
 	              }
             }
 
