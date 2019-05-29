@@ -1,10 +1,13 @@
 var shader = null;
+var renderer;
+var hud;
 
 var gl = null
 
 function main() {
    // main2();
    canvas = document.getElementById("webgl");
+   
 
    gl = getWebGLContext(canvas);
    if (!gl) {
@@ -34,21 +37,52 @@ function main() {
    shaderNew.addUniform("u_ViewMatrix", "mat4", new Matrix4());
    shaderNew.addUniform("u_Sampler", "sampler2D", 0);
 
-   begin();
+   begin(inputHandler);
    renderer = new Renderer(gl, scene, camera);
    renderer.start();
 
 
 }
 
-function begin() {
+function hudSetup(context){
+   var num = 0;
+   hud = document.getElementById("hud");
+   var ctx = hud.getContext("2d");
+
+   hud.onmousedown = function(){
+      // console.log(context.scene.geometries);
+   }
+
+   var tick = function(){
+      console.log("sa", num);
+      num = draw2d(ctx, num);
+      requestAnimationFrame(tick, hud);
+   }
+
+   tick();
+
+}
+
+function draw2d(ctx, num){
+   if(num < 50){
+      ++num;
+   } else {
+      num %= 50;
+   }
+   ctx.clearRect(0, 0, 400, 400);
+   ctx.font = '18px "Times New Roman"';
+   ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+   ctx.fillText('Speed: ' + num, 50, 30);
+   return num;
+}
+
+function begin(inputHandler) {
 
    var walls = new Image();
    walls.onload = function () {
       _inputHandler.image = walls;
       generateWalls(walls);
    };
-
 
 
    walls.src = "objs/redbrick.jpg";
@@ -65,12 +99,6 @@ function begin() {
    };
    var ground = new Square(shaderOld, 0, 0.001, 0, 34, 139, 50, size);
    _inputHandler.scene.addGeometry(ground);
-
-
-   var ground = new Square(shaderOld, 0, 0.001, 0, 34, 139, 50, size);
-   _inputHandler.scene.addGeometry(ground);
-
-
 
 
    var dashboard = new Image();
@@ -109,6 +137,7 @@ function begin() {
    rect = new Verticalsquare(shaderOld, 17.3, 0.81, -17.8, 255, 0, 0, 0.5);
    _inputHandler.scene.addGeometry(rect);
 
+   hudSetup(inputHandler);
 
    // canvas = document.getElementById("webgl");
    // var gl = getWebGLContext(canvas);

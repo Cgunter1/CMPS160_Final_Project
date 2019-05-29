@@ -15,7 +15,6 @@ class InputHandler {
       this.canvas.onmouseup = function () { _inputHandler.mouseUp(); };
       document.addEventListener('keydown', function (ev) { _inputHandler.keyDown(ev) });
       document.addEventListener('keyup', function (ev) { _inputHandler.keyUp(ev) });
-      document.addEventListener("wheel", function (ev) { _inputHandler.mouseWheel(ev) });
    }
 
    
@@ -61,6 +60,13 @@ class InputHandler {
       }
    }
    mouseDown(ev) {
+      renderer.render();
+      let x = ev.clientX;
+      let y = ev.clientY;
+      let rect = ev.target.getBoundingClientRect();
+      x = ((x-rect.left) - canvas.width/2);
+      y = (canvas.height/2 - (y-rect.top));
+      console.log(x, y);
    //    var can = document.getElementById('webgl');
    //    console.log(can);
    //    var ctx = can.getContext("experimental-webgl", {preserveDrawingBuffer: true});
@@ -71,7 +77,7 @@ class InputHandler {
    //    console.log(pixelValues);
    //    // console.log();
       var pixels = new Uint8Array(4);
-      gl.readPixels(100, 410, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+      gl.readPixels(75, 250, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
       console.log(pixels);
 
 
@@ -102,22 +108,22 @@ class InputHandler {
 
    
 
-      var x = ev.clientX;
-      var y = ev.clientY;
+      // var x = ev.clientX;
+      // var y = ev.clientY;
 
 
-      if (x>=90 && x<=111 && y>=404 && y<=422){
-         alert("horn")
-      }
+      // if (x>=90 && x<=111 && y>=404 && y<=422){
+      //    alert("horn")
+      // }
 
 
-      if (x>=345 && x<=370 && y>=400 && y<=425){
-         alert("Radio on")
-      }
+      // if (x>=345 && x<=370 && y>=400 && y<=425){
+      //    alert("Radio on")
+      // }
 
-      if (x>=435 && x<=450 && y>=400 && y<=425){
-         alert("Change station")
-      }
+      // if (x>=435 && x<=450 && y>=400 && y<=425){
+      //    alert("Change station")
+      // }
 
 
 
