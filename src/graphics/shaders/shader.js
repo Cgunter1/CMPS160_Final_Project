@@ -44,6 +44,7 @@ class Shader {
      */
     addUniform(uniformName, type, value) {
         var location = this.gl.getUniformLocation(this.program, uniformName);
+        // console.log(location, uniformName);
         this.uniforms[uniformName] = {"type": type, "location": location, "value": value};
     }
 

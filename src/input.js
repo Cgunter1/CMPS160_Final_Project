@@ -15,6 +15,9 @@ class InputHandler {
       this.canvas.onmouseup = function () { _inputHandler.mouseUp(); };
       document.addEventListener('keydown', function (ev) { _inputHandler.keyDown(ev) });
       document.addEventListener('keyup', function (ev) { _inputHandler.keyUp(ev) });
+      this.songs = [document.getElementById("song1"), document.getElementById("song2")];
+      this.currentSong = 0;
+      this.radioOn = false;
    }
 
    
@@ -29,13 +32,16 @@ class InputHandler {
             break
          case "w":
          this.camera.dolly(1);
-         
             break
          case "s":
          this.camera.dolly(-1);
             break
          case "z":
             break
+         case "m":
+            document.getElementById("ambientnoise").volume = .5;
+            document.getElementById("ambientnoise").play();
+            break;
       }
    }
 
@@ -64,20 +70,11 @@ class InputHandler {
       let x = ev.clientX;
       let y = ev.clientY;
       let rect = ev.target.getBoundingClientRect();
-      x = ((x-rect.left) - canvas.width/2);
-      y = (canvas.height/2 - (y-rect.top));
+      x = (x - rect.left);
+      y = (rect.bottom - y);
       console.log(x, y);
-   //    var can = document.getElementById('webgl');
-   //    console.log(can);
-   //    var ctx = can.getContext("experimental-webgl", {preserveDrawingBuffer: true});
-   //    console.log(ctx);
-
-   //    var pixelValues = new Uint8Array(4);
-   //    ctx.readPixels(-.25, 0, 1, 1, ctx.RGBA, ctx.UNSIGNED_BYTE, pixelValues);
-   //    console.log(pixelValues);
-   //    // console.log();
       var pixels = new Uint8Array(4);
-      gl.readPixels(75, 250, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+      gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
       console.log(pixels);
 
 
@@ -112,18 +109,33 @@ class InputHandler {
       // var y = ev.clientY;
 
 
-      // if (x>=90 && x<=111 && y>=404 && y<=422){
-      //    alert("horn")
-      // }
+      if (pixels[0] === 255 && pixels[1] === 255 && pixels[2] === 0){
+         let horn = document.getElementById("carhorn");
+         horn.play();
+         console.log(horn);
+      }
 
 
-      // if (x>=345 && x<=370 && y>=400 && y<=425){
-      //    alert("Radio on")
-      // }
+      if (pixels[0] === 255 && pixels[1] === 0 && pixels[2] === 0){
+         if(!this.radioOn){
+            this.radioOn = !this.radioOn;
+            this.songs[this.currentSong].play();
+         } else {
+            this.radioOn = !this.radioOn;
+            this.songs[this.currentSong].pause();
+         }
+         this.songs[this.currentSong].volume = .05;
+      }
 
-      // if (x>=435 && x<=450 && y>=400 && y<=425){
-      //    alert("Change station")
-      // }
+      if (pixels[0] === 255 && pixels[1] === 165 && pixels[2] === 0){
+         if(this.radioOn){
+            this.songs[this.currentSong].pause();
+            ++this.currentSong;
+            this.currentSong %= this.songs.length
+            this.songs[this.currentSong].play();
+         }
+         this.songs[this.currentSong].volume = .05;
+      }
 
 
 

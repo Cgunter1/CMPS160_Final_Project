@@ -5,7 +5,7 @@ var hud;
 var gl = null
 
 function main() {
-   // main2();
+
    canvas = document.getElementById("webgl");
    
 
@@ -14,20 +14,22 @@ function main() {
       console.log("Failed to get WebGL rendering context.");
       return;
    }
-   // var pixels = new Uint8Array(4);
-   // gl.readPixels(0,0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
-
-   // console.log(pixels);
    var scene = new Scene();
    var camera = new Camera();
    var inputHandler = new InputHandler(canvas, scene, camera);
 
+   console.log("new Vector2([55, 80])");
+
    shaderNew = new Shader(gl, ASG4_VSHADER, ASG4_FSHADER);
    shaderOld = new Shader(gl, ASG1_VSHADER, ASG1_FSHADER);
+   console.log("new Vector2([55, 80])");
    shaderOld.addAttribute("a_Position");
    shaderOld.addAttribute("a_Color");
    shaderOld.addUniform("u_ProjectionMatrix", "mat4", new Matrix4());
    shaderOld.addUniform("u_ViewMatrix", "mat4", new Matrix4());
+   shaderOld.addUniform("u_Eye", "vec4", new Float32Array(4));
+   shaderOld.addUniform("u_FogColor", "vec3", new Float32Array([.137, .231, .423]));
+   shaderOld.addUniform("u_FogDist", "vec2", new Float32Array([55, 80]));
 
    shaderNew.addAttribute("a_Position");
    shaderNew.addAttribute("a_Color");
@@ -44,24 +46,27 @@ function main() {
 
 }
 
-function hudSetup(context){
-   var num = 0;
-   hud = document.getElementById("hud");
-   var ctx = hud.getContext("2d");
-
-   hud.onmousedown = function(){
-      // console.log(context.scene.geometries);
-   }
-
-   var tick = function(){
-      console.log("sa", num);
-      num = draw2d(ctx, num);
-      requestAnimationFrame(tick, hud);
-   }
-
-   tick();
+function fogSetup(){
 
 }
+
+// function hudSetup(context){
+//    var num = 0;
+//    hud = document.getElementById("hud");
+//    var ctx = hud.getContext("2d");
+
+//    hud.onmousedown = function(){
+//       // console.log(context.scene.geometries);
+//    }
+
+//    var tick = function(){
+//       // num = draw2d(ctx, num);
+//       requestAnimationFrame(tick, hud);
+//    }
+
+//    tick();
+
+// }
 
 function draw2d(ctx, num){
    if(num < 50){
@@ -87,16 +92,6 @@ function begin(inputHandler) {
 
    walls.src = "objs/redbrick.jpg";
 
-
-
-   var sky = new Image();
-   sky.src = "objs/sky.jpg";
-
-   sky.onload = function () {
-      _inputHandler.image = sky;
-      var shape = new tiltedCube(shaderNew, -.0001, -.0001, 0, null, null, null, size, sky);
-      _inputHandler.scene.addGeometry(shape);
-   };
    var ground = new Square(shaderOld, 0, 0.001, 0, 34, 139, 50, size);
    _inputHandler.scene.addGeometry(ground);
 
@@ -107,8 +102,6 @@ function begin(inputHandler) {
 
    dashboard.onload = function () {
       _inputHandler.image = dashboard;
-      // var shape = new tiltedCube(shaderNew, -.0001, -.0001, 0, null, null, null, size, sky);
-      // _inputHandler.scene.addGeometry(shape);
       var rect = new Rectangle(shaderNew, 12.6, -1.3, -18.3, 125, 125, 125, 10, dashboard);
       _inputHandler.scene.addGeometry(rect);
    };
@@ -137,11 +130,11 @@ function begin(inputHandler) {
    rect = new Verticalsquare(shaderOld, 17.3, 0.81, -17.8, 255, 0, 0, 0.5);
    _inputHandler.scene.addGeometry(rect);
 
-   hudSetup(inputHandler);
+   // hudSetup(inputHandler);
 
+   // fogSetup();
    // canvas = document.getElementById("webgl");
    // var gl = getWebGLContext(canvas);
 
 }
-
 

@@ -100,4 +100,7 @@ class Camera {
          this.center.elements[0], this.center.elements[1], this.center.elements[2],
          this.up.elements[0], this.up.elements[1], this.up.elements[2]);
    }
+   changeEye(shader){
+      shader.setUniform("u_Eye", new Vector4(this.eye.elements[0], this.eye.elements[1], this.eye.elements[2]));
+   }
 }
