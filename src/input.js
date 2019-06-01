@@ -159,31 +159,6 @@ function getRandomArbitrary(min, max) {
 }
 function generateWalls(walls) {
 
-   // for (let i = 0; i < 32; i++) {
-   //    for (let j = 0; j < 32; j++) {
-
-   //       if (i == 0 || j == 0 || i == 31 || j == 31) {
-   //          for (var height = 0; height < 4; height++) {
-   //             var shape = new tiltedCube(shaderNew, i, height, -j, null, null, null, 1, walls);
-   //             _inputHandler.scene.addGeometry(shape);
-   //          }
-
-   //       }
-   //       else {
-
-   //          for (var height = 0; height < getRandomArbitrary(-10, 4); height++) {
-   //             var shape = new tiltedCube(shaderNew, i, height, -j, null, null, null, 1, walls);
-   //             _inputHandler.scene.addGeometry(shape);
-   //          }
-
-   //       }
-
-
-
-   //    }
-   // }
-
-
    var thewalls = [
       [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
       [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
