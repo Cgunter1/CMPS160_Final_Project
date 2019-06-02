@@ -71,6 +71,7 @@ class Camera {
       this.eye = this.eye.add(n);
       this.center = this.center.add(n);
       this.updateView();
+      console.log(this.eye, this.center, this.speed);
    }
 
    tilt(dir) {
@@ -84,6 +85,7 @@ class Camera {
       newCenter = rotMatrix.multiplyVector3(newCenter);
       this.center = newCenter.add(this.eye);
       this.updateView();
+      console.log(this.eye, this.center, this.speed);
    }
 
    pan(dir) {
@@ -93,6 +95,7 @@ class Camera {
       newCenter = rotMatrix.multiplyVector3(newCenter);
       this.center = newCenter.add(this.eye);
       this.updateView();
+      console.log(this.eye, this.center, this.speed);
    }
 
    updateView() {

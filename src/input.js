@@ -4,12 +4,13 @@ var _inputHandler = null;
 var size = 32;
 class InputHandler {
 
-   constructor(canvas, scene, camera) {
+   constructor(canvas, scene, camera, dashboardItems) {
       this.canvas = canvas;
       this.scene = scene;
       this.camera = camera;
       _inputHandler = this;
       this.image = null;
+      this.dashboardItems = dashboardItems;
       this.canvas.onmousemove = function (ev) { _inputHandler.mouseMove(ev) };
       this.canvas.onmousedown = function (ev) { _inputHandler.mouseDown(ev); };
       this.canvas.onmouseup = function () { _inputHandler.mouseUp(); };
@@ -24,18 +25,21 @@ class InputHandler {
 
    keyDown(ev) {
       var keyName = event.key;
+      let newEye;
 
       switch (keyName) {
          case "a":
+            this.camera.pan(3);
             break
          case "d":
+            this.camera.pan(-3);
             break
          case "w":
-         this.camera.dolly(1);
-            break
+            this.camera.dolly(1);
+            break;
          case "s":
-         this.camera.dolly(-1);
-            break
+            this.camera.dolly(-1);
+            break;
          case "z":
             break
          case "m":
@@ -159,6 +163,31 @@ function getRandomArbitrary(min, max) {
 }
 function generateWalls(walls) {
 
+   // for (let i = 0; i < 32; i++) {
+   //    for (let j = 0; j < 32; j++) {
+
+   //       if (i == 0 || j == 0 || i == 31 || j == 31) {
+   //          for (var height = 0; height < 4; height++) {
+   //             var shape = new tiltedCube(shaderNew, i, height, -j, null, null, null, 1, walls);
+   //             _inputHandler.scene.addGeometry(shape);
+   //          }
+
+   //       }
+   //       else {
+
+   //          for (var height = 0; height < getRandomArbitrary(-10, 4); height++) {
+   //             var shape = new tiltedCube(shaderNew, i, height, -j, null, null, null, 1, walls);
+   //             _inputHandler.scene.addGeometry(shape);
+   //          }
+
+   //       }
+
+
+
+   //    }
+   // }
+
+
    var thewalls = [
       [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
       [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
@@ -200,7 +229,7 @@ function generateWalls(walls) {
 
 
          for (var height =0; height < thewalls[i][j]; height++){
-            var shape = new tiltedCube(shaderNew, i, height, -j, null, null, null, 1, walls);
+            var shape = new tiltedCube(shaderOld, i, height, -j, null, null, null, 1, walls);
                _inputHandler.scene.addGeometry(shape);
 
          }

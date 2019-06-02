@@ -4,9 +4,12 @@ class Rectangle extends Geometry {
    constructor(shader, x, y, z, red, green, blue, size, image) {
        super(shader);
        this.image = image;
+       this.center = [x, y, z];
        this.vertices = this.generaterectangleVertices(shader, x, y, z, red, green, blue, size, image);
        this.faces = {0: this.vertices};
        this.interleaveVertices();
+       this.matrixTranslation = new Matrix4();
+       this.angle = 0;
    }
  
    generaterectangleVertices(shader, x, y, z, red, green, blue, size,image) {
@@ -48,5 +51,13 @@ class Rectangle extends Geometry {
  
        return vertices;
    }
+   render(){
+     this.shader.setUniform("u_ModelMatrix", this.matrixTranslation.elements);
+   }
+
+   rotate(eyePosition){
+
+   }
+
  }
  

@@ -24,7 +24,7 @@ class Renderer {
         this.initGLSLBuffers();
 
         // Setting canvas' clear color
-        this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        this.gl.clearColor(0.8627450980, 0.858823529,0.87450980392, 1.0);
 
         // Use the z-buffer when drawing
         this.gl.enable(gl.DEPTH_TEST);
@@ -56,6 +56,12 @@ class Renderer {
             geometry.shader.setUniform("u_ProjectionMatrix", this.camera.projectionMatrix.elements);
 
             geometry.render();
+
+            if(geometry.fog){
+              let newEye = new Float32Array([this.camera.eye.elements[0], this.camera.eye.elements[1], this.camera.eye.elements[2], 0])
+              geometry.shader.setUniform("u_Eye", newEye);
+            }
+
             if(geometry.image != null) {
                 if(!(geometry.image.src in this.textures)) {
                     // Create a texture object and store id using its path as key
