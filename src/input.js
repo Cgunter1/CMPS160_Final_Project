@@ -29,10 +29,10 @@ class InputHandler {
 
       switch (keyName) {
          case "a":
-            this.camera.pan(3);
+            this.camera.pan(10);
             break
          case "d":
-            this.camera.pan(-3);
+            this.camera.pan(-10);
             break
          case "w":
             this.camera.dolly(1);
