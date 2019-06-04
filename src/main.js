@@ -4,6 +4,7 @@ var hud;
 
 var gl = null
 
+
 function main() {
 
    canvas = document.getElementById("webgl");
@@ -78,7 +79,12 @@ function main() {
 
    begin(inputHandler, dashboardItems);
    renderer = new Renderer(gl, scene, camera);
+
+
+   // main2()
    renderer.start();
+
+
 
 
 }
@@ -203,28 +209,65 @@ function begin(inputHandler, dashboardItems) {
    ground = new Square(shaderFogTest, 11, .4, -53.5, 0, 0, 0, 10.7);
    _inputHandler.scene.addGeometry(ground);
 
+   
 
 
+
+   addFire()
+   addRain()
+
+
+
+    
+
+
+   
+   
+
+   hudSetup(inputHandler);
+
+   
+
+   // fogSetup();
+   // canvas = document.getElementById("webgl");
+   // var gl = getWebGLContext(canvas);
+
+}
+
+function addFire(){
 
    for (var k = 30; k < 90; k += 30) {
       trashFire(12.3, 0.0, -k)
       trashFire(18.3, 0.0, -k)
    }
 
+}
 
 
+function addRain(){
+   for (let i = 0; i < 32; i++) {
+      for (let j = 0; j < 32; j++) {
+            rain(i,0,-j)
+    
+      }
+   }
+
+}
 
 
+// x = 16
+// y = 0
+// z = -19
 
 
+function rain(x,y,z){
 
 
+   var rain = new rainCube(shaderFire, x ,y, z, 135, 206, 250, 0.08, null, 0, 5)
 
-   hudSetup(inputHandler);
+      _inputHandler.scene.addGeometry(rain)
 
-   // fogSetup();
-   // canvas = document.getElementById("webgl");
-   // var gl = getWebGLContext(canvas);
+
 
 }
 
@@ -269,8 +312,6 @@ function trashFire(x, y, z) {
       _inputHandler.scene.addGeometry(fCube)
 
    }
-
-
 
 
 
