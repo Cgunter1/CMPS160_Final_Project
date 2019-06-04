@@ -19,6 +19,10 @@ class Circle extends Geometry {
       this.vertices = this.generateCircleVertices(x, y, z,r, g, b, size);
       this.faces = { 0: this.vertices };
 
+      this.matrixTranslation = new Matrix4();
+      this.speed = 0;
+      this.distance = 0;
+
       // CALL THIS AT THE END OF ANY SHAPE CONSTRUCTOR
       this.interleaveVertices();
    }
@@ -55,6 +59,11 @@ class Circle extends Geometry {
    
       return vertices;
 
+   }
 
+   render(){
+      this.distance += this.speed;
+      this.matrixTranslation.setTranslate(0, 0, this.distance);
+      this.shader.setUniform("u_ModelMatrix", this.matrixTranslation.elements);
    }
 }

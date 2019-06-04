@@ -20,6 +20,7 @@ class Camera {
 
    constructor() {
       this.speed = 0.5;
+      this.relativeSpeed = 0.0;
 
       this.eye = new Vector3([16.0, 2.0, -16.0]);
       this.center = new Vector3([16.0, 2.0, -17.0]);

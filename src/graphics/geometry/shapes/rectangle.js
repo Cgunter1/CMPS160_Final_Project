@@ -9,6 +9,8 @@ class Rectangle extends Geometry {
        this.faces = {0: this.vertices};
        this.interleaveVertices();
        this.matrixTranslation = new Matrix4();
+       this.speed = 0;
+       this.distance = 0;
        this.angle = 0;
    }
  
@@ -52,6 +54,8 @@ class Rectangle extends Geometry {
        return vertices;
    }
    render(){
+     this.distance += this.speed;
+     this.matrixTranslation.setTranslate(0, 0, this.distance);
      this.shader.setUniform("u_ModelMatrix", this.matrixTranslation.elements);
    }
 

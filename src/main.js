@@ -29,6 +29,7 @@ function main() {
    shaderDashText = new Shader(gl, DashboardVShaderTexture, DashboardFShaderTexture);
    shaderFogTest = new Shader(gl, FOG_VSHADER, FOG_FSHADER);
    shaderFire = new Shader(gl, FIRE_VSHADER, FIRE_FSHADER);
+   dashShader = new Shader(gl, DASH_VSHADER, DASH_FSHADER);
 
    shaderOld.addAttribute("a_Position");
    shaderOld.addAttribute("a_Color");
@@ -37,6 +38,14 @@ function main() {
    shaderOld.addUniform("u_Eye", "vec4", new Float32Array(4));
    shaderOld.addUniform("u_FogColor", "vec3", new Float32Array([.8627450980, 0.858823529, 0.87450980392,]));
    shaderOld.addUniform("u_FogDist", "vec2", new Float32Array([55, 80]));
+
+
+   dashShader.addAttribute("a_Position");
+   dashShader.addAttribute("a_Color");
+   dashShader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4());
+   dashShader.addUniform("u_ViewMatrix", "mat4", new Matrix4());
+   dashShader.addUniform("u_Eye", "vec4", new Float32Array(4));
+   dashShader.addUniform("u_ModelMatrix", "mat4", new Matrix4());
 
    shaderDashText.addAttribute("a_Position");
    shaderDashText.addAttribute("a_Color");
@@ -62,7 +71,7 @@ function main() {
    shaderFogTest.addUniform("u_ProjectionMatrix", "mat4", new Matrix4());
    shaderFogTest.addUniform("u_ViewMatrix", "mat4", new Matrix4());
    shaderFogTest.addUniform("u_Eye", "vec4", new Float32Array([camera.eye.elements[0], camera.eye.elements[1], camera.eye.elements[2], 0]));
-   shaderFogTest.addUniform("u_FogDist", "vec2", new Float32Array([0, 10]));
+   shaderFogTest.addUniform("u_FogDist", "vec2", new Float32Array([0, 12]));
    shaderFogTest.addUniform("u_FogColor", "vec3", new Float32Array([.8627450980, 0.858823529, 0.87450980392,]));
 
 
@@ -103,7 +112,7 @@ function hudSetup(context) {
    }
 
    var tick = function () {
-      num = draw2d(ctx, num);
+      num = draw2d(ctx, num, context);
       requestAnimationFrame(tick, hud);
    }
 
@@ -111,16 +120,48 @@ function hudSetup(context) {
 
 }
 
-function draw2d(ctx, num) {
-   if (num < 50) {
-      ++num;
-   } else {
-      num %= 50;
+function draw2d(ctx, num, context) {
+
+   switch(context.camera.relativeSpeed){
+      case .0625:
+         num = 10;
+         break;
+      case .125:
+         num = 20;
+         break;
+      case .25:
+         num = 35;
+         break;
+      case .5:
+         num = 47;
+         break;
+      case 1:
+         num = 60;
+         break;
+      case -.0625:
+         num = -10;
+         break;
+      case -.125:
+         num = -20;
+         break;
+      case -.25:
+         num = -35;
+         break;
+      case -.5:
+         num = -47;
+         break;
+      case -1:
+         num = -60;
+         break;
+      default:
+         num = 0;
+         break;
    }
+   
    ctx.clearRect(0, 0, 400, 400);
    ctx.font = '18px "Times New Roman"';
-   ctx.fillStyle = 'rgba(255, 255, 255, 1)';
-   ctx.fillText('Speed: ' + num, 50, 30);
+   ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+   ctx.fillText('Speed: ' + num + ' mph', 50, 30);
    return num;
 }
 
@@ -156,57 +197,57 @@ function begin(inputHandler, dashboardItems) {
 
 
 
-   var circ = new Circle(shaderOld, 14.5, 0.65, -18.2, 255, 125, 0, 5);
+   var circ = new Circle(dashShader, 14.5, 0.65, -18.2, 255, 125, 0, 5);
    _inputHandler.scene.addGeometry(circ);
    dashboardItems.push(circ);
 
 
-   circ = new Circle(shaderOld, 14.55, 0.68, -18.1, 255, 255, 0, 1);
+   circ = new Circle(dashShader, 14.55, 0.68, -18.1, 255, 255, 0, 1);
    _inputHandler.scene.addGeometry(circ);
    dashboardItems.push(circ);
 
 
-   rect = new Rectangle(shaderOld, 16.5, 0.5, -18.0, 125, 100, 50, 2);
+   rect = new Rectangle(dashShader, 16.5, 0.5, -18.0, 125, 100, 50, 2);
    _inputHandler.scene.addGeometry(rect);
    dashboardItems.push(rect);
 
-   circ = new Circle(shaderOld, 16.75, 0.8, -17.9, 255, 165, 0, 1.0);
+   circ = new Circle(dashShader, 16.75, 0.8, -17.9, 255, 165, 0, 1.0);
    _inputHandler.scene.addGeometry(circ);
    dashboardItems.push(circ);
 
-   rect = new Verticalsquare(shaderOld, 17.3, 0.81, -17.8, 255, 0, 0, 0.5);
+   rect = new Verticalsquare(dashShader, 17.3, 0.81, -17.8, 255, 0, 0, 0.5);
    _inputHandler.scene.addGeometry(rect);
    dashboardItems.push(rect);
 
-   var cube = new tiltedCubeFog(shaderFogTest, 20.3, 0.81, -23, 255, 0, 0, 10, null);
+   var cube = new tiltedCubeFog(shaderFogTest, 21.3, -0.4, -23, 255, 0, 0, 10, null);
    _inputHandler.scene.addGeometry(cube);
 
-   var cube = new tiltedCubeFog(shaderFogTest, 1.8, 0.81, -23, 255, 0, 0, 10, null);
+   var cube = new tiltedCubeFog(shaderFogTest, 0.3, -0.4, -23, 255, 0, 0, 10, null);
    _inputHandler.scene.addGeometry(cube);
 
-   var cube = new tiltedCubeFog(shaderFogTest, 20.3, 0.81, -43, 255, 0, 0, 10, null);
+   var cube = new tiltedCubeFog(shaderFogTest, 21.3, -0.4, -43, 255, 0, 0, 10, null);
    _inputHandler.scene.addGeometry(cube);
 
-   var cube = new tiltedCubeFog(shaderFogTest, 1.8, 0.81, -43, 255, 0, 0, 10, null);
+   var cube = new tiltedCubeFog(shaderFogTest, 0.3, -0.4, -43, 255, 0, 0, 10, null);
    _inputHandler.scene.addGeometry(cube);
 
-   var cube = new tiltedCubeFog(shaderFogTest, 20.3, 0.81, -63, 255, 0, 0, 10, null);
+   var cube = new tiltedCubeFog(shaderFogTest, 21.3, -0.4, -63, 255, 0, 0, 10, null);
    _inputHandler.scene.addGeometry(cube);
 
-   var cube = new tiltedCubeFog(shaderFogTest, 1.8, 0.81, -63, 255, 0, 0, 10, null);
+   var cube = new tiltedCubeFog(shaderFogTest, 0.3, -0.4, -63, 255, 0, 0, 10, null);
    _inputHandler.scene.addGeometry(cube);
 
-   ground = new Square(shaderFogTest, 11, .4, -23.5, 0, 0, 0, 10.7);
+   ground = new Square(shaderFogTest, 10, -.4, -23.5, 0, 0, 0, 12);
    _inputHandler.scene.addGeometry(ground);
-   ground = new Square(shaderFogTest, 11, .4, -33.5, 0, 0, 0, 10.7);
+   ground = new Square(shaderFogTest, 10, -.4, -33.5, 0, 0, 0, 12);
    _inputHandler.scene.addGeometry(ground);
-   ground = new Square(shaderFogTest, .5, .4, -33.5, 0, 0, 0, 10.7);
+   ground = new Square(shaderFogTest, .5, -.4, -33.5, 0, 0, 0, 12);
    _inputHandler.scene.addGeometry(ground);
-   ground = new Square(shaderFogTest, 21, .4, -33.5, 0, 0, 0, 10.7);
+   ground = new Square(shaderFogTest, 21, -.4, -33.5, 0, 0, 0, 12);
    _inputHandler.scene.addGeometry(ground);
-   ground = new Square(shaderFogTest, 11, .4, -43.5, 0, 0, 0, 10.7);
+   ground = new Square(shaderFogTest, 10, -.4, -43.5, 0, 0, 0, 12);
    _inputHandler.scene.addGeometry(ground);
-   ground = new Square(shaderFogTest, 11, .4, -53.5, 0, 0, 0, 10.7);
+   ground = new Square(shaderFogTest, 10, -.4, -53.5, 0, 0, 0, 12);
    _inputHandler.scene.addGeometry(ground);
 
    
@@ -237,8 +278,8 @@ function begin(inputHandler, dashboardItems) {
 function addFire(){
 
    for (var k = 30; k < 90; k += 30) {
-      trashFire(12.3, 0.0, -k)
-      trashFire(18.3, 0.0, -k)
+      trashFire(10.3, -0.4, -k)
+      trashFire(20.3, -0.4, -k)
    }
 
 }

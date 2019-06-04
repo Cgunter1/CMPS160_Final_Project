@@ -23,9 +23,10 @@ class InputHandler {
 
    
 
+   // Make speed a certain volume of the engine noise. The higher the speed the louder the noise.
    keyDown(ev) {
       var keyName = event.key;
-      let newEye;
+      let newSpeed;
 
       switch (keyName) {
          case "a":
@@ -35,10 +36,102 @@ class InputHandler {
             this.camera.pan(-10);
             break
          case "w":
-            this.camera.dolly(1);
+            newSpeed = 0;
+            if(this.camera.relativeSpeed == 0){
+               this.camera.relativeSpeed = 1/8;
+               newSpeed = -.0625;
+            } else if(this.camera.relativeSpeed == -1/8) {
+               this.camera.relativeSpeed = 0;
+               newSpeed = 0.0;
+            } else if(this.camera.relativeSpeed < 0) {
+               switch(this.camera.relativeSpeed){
+                  case -1/4:
+                     this.camera.relativeSpeed = -1/8;
+                     newSpeed = .0625;
+                     break;
+                  case -1/2:
+                     this.camera.relativeSpeed = -1/4;
+                     newSpeed = .125;
+                     break;
+                  case -1:
+                     this.camera.relativeSpeed = -1/2;
+                     newSpeed = .25;
+                     break;
+                  default:
+                     console.log("Can't get here");
+                     break;
+               }
+            } else {
+               switch(this.camera.relativeSpeed){
+                  case 1/8:
+                     this.camera.relativeSpeed = 1/4;
+                     newSpeed = -.125;
+                     break;
+                  case 1/4:
+                     this.camera.relativeSpeed = 1/2;
+                     newSpeed = -.25;
+                     break;
+                  case 1/2:
+                     this.camera.relativeSpeed = 1;
+                     newSpeed = -.5;
+                     break;
+                  default:
+                     console.log("Can't get here either.");
+                     break;
+               }
+            }
+            for(let i = 0; i < this.dashboardItems.length; ++i){
+               this.dashboardItems[i].speed = newSpeed;
+            }
             break;
          case "s":
-            this.camera.dolly(-1);
+               newSpeed = 0;
+               if(this.camera.relativeSpeed == 0){
+                  this.camera.relativeSpeed = -1/8;
+                  newSpeed = .0625;
+               } else if(this.camera.relativeSpeed == 1/8) {
+                  this.camera.relativeSpeed = 0;
+                  newSpeed = 0.0;
+               } else if(this.camera.relativeSpeed > 0) {
+                  switch(this.camera.relativeSpeed){
+                     case 1/4:
+                        this.camera.relativeSpeed = 1/8;
+                        newSpeed = -.0625;
+                        break;
+                     case 1/2:
+                        this.camera.relativeSpeed = 1/4;
+                        newSpeed = -.125;
+                        break;
+                     case 1:
+                        this.camera.relativeSpeed = 1/2;
+                        newSpeed = -.25;
+                        break;
+                     default:
+                        console.log("Can't get here");
+                        break;
+                  }
+               } else {
+                  switch(this.camera.relativeSpeed){
+                     case -1/8:
+                        this.camera.relativeSpeed = -1/4;
+                        newSpeed = .125;
+                        break;
+                     case -1/4:
+                        this.camera.relativeSpeed = -1/2;
+                        newSpeed = .25;
+                        break;
+                     case -1/2:
+                        this.camera.relativeSpeed = -1;
+                        newSpeed = .5;
+                        break;
+                     default:
+                        console.log("Can't get here either.");
+                        break;
+                  }
+               }
+               for(let i = 0; i < this.dashboardItems.length; ++i){
+                  this.dashboardItems[i].speed = newSpeed;
+               }
             break;
          case "z":
             break

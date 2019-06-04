@@ -6,6 +6,7 @@ var ASG1_VSHADER =
   varying vec4 v_Color;
   uniform mat4 u_ProjectionMatrix;
   uniform mat4 u_ViewMatrix;
+  uniform mat4 u_ModelMatrix;
 
   void main() {
     v_Color = a_Color;

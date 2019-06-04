@@ -45,6 +45,9 @@ class Renderer {
      */
     render() {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+        if(this.camera.speed != 0){
+          this.camera.dolly(this.camera.relativeSpeed);
+        }
 
         for (var i = 0; i < this.scene.geometries.length; i++) {
             var geometry = this.scene.geometries[i];
