@@ -15,7 +15,7 @@ class Rectangle extends Geometry {
    }
  
    generaterectangleVertices(shader, x, y, z, red, green, blue, size,image) {
-       var vertices = []
+       var vertices = [];
       //  var vertex1 = new Vertex(x, y, z, red, green, blue);
       //  var vertex2 = new Vertex(x+size,  y, z, red, green, blue);
       //  var vertex3 = new Vertex(x, y, z-size, red, green, blue);

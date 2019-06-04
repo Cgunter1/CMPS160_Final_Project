@@ -23,7 +23,7 @@ class fireCube extends Geometry {
       
       this.translationMatrix = new Matrix4();
       this.movingIn = true
-
+      this.fog = true;
 
       this.fireBegin = fireBegin
       this.fireEnd = fireEnd
