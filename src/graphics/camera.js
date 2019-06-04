@@ -72,7 +72,7 @@ class Camera {
       this.eye = this.eye.add(n);
       this.center = this.center.add(n);
       this.updateView();
-      console.log(this.eye, this.center, this.speed);
+      // console.log(this.eye, this.center, this.speed);
    }
 
    tilt(dir) {

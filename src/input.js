@@ -37,23 +37,32 @@ class InputHandler {
             break
          case "w":
             newSpeed = 0;
+            if(this.camera.relativeSpeed == 1){
+               return;
+            }
             if(this.camera.relativeSpeed == 0){
+               document.getElementById("drivesound").volume = .125;
+               document.getElementById("drivesound").play();
                this.camera.relativeSpeed = 1/8;
                newSpeed = -.0625;
             } else if(this.camera.relativeSpeed == -1/8) {
+               document.getElementById("drivesound").pause();
                this.camera.relativeSpeed = 0;
                newSpeed = 0.0;
             } else if(this.camera.relativeSpeed < 0) {
                switch(this.camera.relativeSpeed){
                   case -1/4:
+                     document.getElementById("drivesound").volume = .125;
                      this.camera.relativeSpeed = -1/8;
                      newSpeed = .0625;
                      break;
                   case -1/2:
+                     document.getElementById("drivesound").volume = .20;
                      this.camera.relativeSpeed = -1/4;
                      newSpeed = .125;
                      break;
                   case -1:
+                     document.getElementById("drivesound").volume = .35;
                      this.camera.relativeSpeed = -1/2;
                      newSpeed = .25;
                      break;
@@ -64,14 +73,17 @@ class InputHandler {
             } else {
                switch(this.camera.relativeSpeed){
                   case 1/8:
+                     document.getElementById("drivesound").volume = .20;
                      this.camera.relativeSpeed = 1/4;
                      newSpeed = -.125;
                      break;
                   case 1/4:
+                     document.getElementById("drivesound").volume = .35;
                      this.camera.relativeSpeed = 1/2;
                      newSpeed = -.25;
                      break;
                   case 1/2:
+                     document.getElementById("drivesound").volume = .44;
                      this.camera.relativeSpeed = 1;
                      newSpeed = -.5;
                      break;
@@ -86,23 +98,32 @@ class InputHandler {
             break;
          case "s":
                newSpeed = 0;
+               if(this.camera.relativeSpeed == -1){
+                  return;
+               }
                if(this.camera.relativeSpeed == 0){
                   this.camera.relativeSpeed = -1/8;
+                  document.getElementById("drivesound").volume = .125;
+                  document.getElementById("drivesound").play();
                   newSpeed = .0625;
                } else if(this.camera.relativeSpeed == 1/8) {
+                  document.getElementById("drivesound").pause();
                   this.camera.relativeSpeed = 0;
                   newSpeed = 0.0;
                } else if(this.camera.relativeSpeed > 0) {
                   switch(this.camera.relativeSpeed){
                      case 1/4:
+                        document.getElementById("drivesound").volume = .125;
                         this.camera.relativeSpeed = 1/8;
                         newSpeed = -.0625;
                         break;
                      case 1/2:
+                        document.getElementById("drivesound").volume = .20;
                         this.camera.relativeSpeed = 1/4;
                         newSpeed = -.125;
                         break;
                      case 1:
+                        document.getElementById("drivesound").volume = .35;
                         this.camera.relativeSpeed = 1/2;
                         newSpeed = -.25;
                         break;
@@ -113,22 +134,28 @@ class InputHandler {
                } else {
                   switch(this.camera.relativeSpeed){
                      case -1/8:
+                        document.getElementById("drivesound").volume = .20;
                         this.camera.relativeSpeed = -1/4;
                         newSpeed = .125;
                         break;
                      case -1/4:
+                        document.getElementById("drivesound").volume = .35;
                         this.camera.relativeSpeed = -1/2;
                         newSpeed = .25;
                         break;
                      case -1/2:
+                        document.getElementById("drivesound").volume = .44;
                         this.camera.relativeSpeed = -1;
                         newSpeed = .5;
+                        break;
+                     case -1:
                         break;
                      default:
                         console.log("Can't get here either.");
                         break;
                   }
                }
+               console.log(this.camera.relativeSpeed);
                for(let i = 0; i < this.dashboardItems.length; ++i){
                   this.dashboardItems[i].speed = newSpeed;
                }
@@ -136,8 +163,10 @@ class InputHandler {
          case "z":
             break
          case "m":
-            document.getElementById("ambientnoise").volume = .5;
+            document.getElementById("ambientnoise").volume = .4;
             document.getElementById("ambientnoise").play();
+            document.getElementById("rainandthunder").volume = .5;
+            document.getElementById("rainandthunder").play();
             break;
       }
    }
