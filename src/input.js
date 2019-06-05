@@ -29,12 +29,6 @@ class InputHandler {
       let newSpeed;
 
       switch (keyName) {
-         case "a":
-            this.camera.pan(10);
-            break
-         case "d":
-            this.camera.pan(-10);
-            break
          case "w":
             newSpeed = 0;
             if(this.camera.relativeSpeed == 1){
