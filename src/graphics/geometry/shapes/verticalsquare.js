@@ -8,6 +8,8 @@ class Verticalsquare extends Geometry {
        this.matrixTranslation = new Matrix4();
        this.speed = 0;
        this.distance = 0;
+       this.on = false;
+       this.shader.setUniform("u_Color", new Float32Array([.7, 0, 0, 1]));
        this.interleaveVertices();
    }
  
@@ -37,6 +39,15 @@ class Verticalsquare extends Geometry {
        vertices.push(vertex6);
  
        return vertices;
+   }
+
+   click(){
+       if(this.on){
+           this.shader.setUniform("u_Color", new Float32Array([.7, 0, 0, 1]));
+       } else {
+           this.shader.setUniform("u_Color", new Float32Array([0, .7, 0, 1]))
+       }
+       this.on = !this.on;
    }
 
    render(){

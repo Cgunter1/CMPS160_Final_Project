@@ -235,17 +235,19 @@ class InputHandler {
       // var y = ev.clientY;
 
 
-      if (pixels[0] === 255 && pixels[1] === 255 && pixels[2] === 0){
+      if (pixels[0] === 0 && pixels[1] === 1 && pixels[2] === 1){
          let horn = document.getElementById("carhorn");
          horn.play();
          console.log(horn);
       }
+      console.log(this.camera);
 
-
-      if (pixels[0] === 255 && pixels[1] === 0 && pixels[2] === 0){
+      if (pixels[0] === 178 && pixels[1] === 0 && pixels[2] === 0 || pixels[0] === 0 && pixels[1] === 178 && pixels[2] === 0){
+         this.dashboardItems[3].click();
          if(!this.radioOn){
             this.radioOn = !this.radioOn;
             this.songs[this.currentSong].play();
+            
          } else {
             this.radioOn = !this.radioOn;
             this.songs[this.currentSong].pause();

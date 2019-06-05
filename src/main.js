@@ -31,6 +31,7 @@ function main() {
    shaderFire = new Shader(gl, FIRE_VSHADER, FIRE_FSHADER);
    dashShader = new Shader(gl, DASH_VSHADER, DASH_FSHADER);
    shaderFireFog = new Shader(gl, FIRE_FOG_VSHADER, FIRE_FOG_FSHADER);
+   buttonShader = new Shader(gl, BUTTON_VSHADER, BUTTON_FSHADER);
 
    shaderOld.addAttribute("a_Position");
    shaderOld.addAttribute("a_Color");
@@ -82,7 +83,7 @@ function main() {
    shaderFogTest.addUniform("u_ProjectionMatrix", "mat4", new Matrix4());
    shaderFogTest.addUniform("u_ViewMatrix", "mat4", new Matrix4());
    shaderFogTest.addUniform("u_Eye", "vec4", new Float32Array([camera.eye.elements[0], camera.eye.elements[1], camera.eye.elements[2], 0]));
-   shaderFogTest.addUniform("u_FogDist", "vec2", new Float32Array([0, 12]));
+   shaderFogTest.addUniform("u_FogDist", "vec2", new Float32Array([0, 14]));
    shaderFogTest.addUniform("u_FogColor", "vec3", new Float32Array([.8627450980, 0.858823529, 0.87450980392,]));
 
 
@@ -96,6 +97,18 @@ function main() {
    shaderFire.addUniform("u_Eye", "vec4", new Float32Array(4));
    shaderFire.addUniform("u_FogColor", "vec3", new Float32Array([.8627450980, 0.858823529, 0.87450980392,]));
    shaderFire.addUniform("u_FogDist", "vec2", new Float32Array([55, 80]));
+
+
+   // Button Shader
+   buttonShader.addAttribute("a_Position");
+   buttonShader.addAttribute("a_Color");
+   buttonShader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4());
+   buttonShader.addUniform("u_ViewMatrix", "mat4", new Matrix4());
+   buttonShader.addUniform("u_Eye", "vec4", new Float32Array(4));
+   buttonShader.addUniform("u_ModelMatrix", "mat4", new Matrix4());
+   buttonShader.addUniform("u_Color", "vec4", new Float32Array([0, 0, 0, 1]));
+
+
 
    begin(inputHandler, dashboardItems);
    renderer = new Renderer(gl, scene, camera);
@@ -114,6 +127,7 @@ function fogSetup() {
 }
 
 function hudSetup(context) {
+   var direction = "North";
    var num = 0;
    hud = document.getElementById("hud");
    var ctx = hud.getContext("2d");
@@ -123,7 +137,7 @@ function hudSetup(context) {
    }
 
    var tick = function () {
-      num = draw2d(ctx, num, context);
+      num = draw2d(ctx, num, direction, context);
       requestAnimationFrame(tick, hud);
    }
 
@@ -131,48 +145,78 @@ function hudSetup(context) {
 
 }
 
-function draw2d(ctx, num, context) {
+function draw2d(ctx, num, dir, context) {
 
    switch(context.camera.relativeSpeed){
       case .0625:
+         dir = "North";
          num = 10;
          break;
       case .125:
+         dir = "North";
          num = 20;
          break;
       case .25:
+         dir = "North";
          num = 35;
          break;
       case .5:
+         dir = "North";
          num = 47;
          break;
       case 1:
+         dir = "North";
          num = 60;
          break;
       case -.0625:
-         num = -10;
+         dir = "South";
+         num = 10;
          break;
       case -.125:
-         num = -20;
+         dir = "South";
+         num = 20;
          break;
       case -.25:
-         num = -35;
+         dir = "South";
+         num = 35;
          break;
       case -.5:
-         num = -47;
+         dir = "South";
+         num = 47;
          break;
       case -1:
-         num = -60;
+         dir = "South";
+         num = 60;
          break;
       default:
+         dir = "N/A";
          num = 0;
          break;
    }
    
-   ctx.clearRect(0, 0, 400, 400);
-   ctx.font = '18px "Times New Roman"';
-   ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-   ctx.fillText('Speed: ' + num + ' mph', 50, 30);
+   ctx.clearRect(0, 0, 400, 500);
+   if(context.camera.eye.elements[2] < -66.625){
+      ctx.clearRect(0, 0, 700, 500);
+      console.log("sdadsa");
+      ctx.font = '30px "Comic Sans"';
+      ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+      ctx.fillText('You have reached the end.', 50, 30);
+      ctx.fillText('Go Back.', 50, 62);
+   }else if(context.camera.eye.elements[2] > -15){
+      ctx.clearRect(0, 0, 700, 500);
+      console.log("sdadsa");
+      ctx.font = '30px "Comic Sans"';
+      ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+      ctx.fillText('You have reached the beginning.', 50, 30);
+      ctx.fillText('Go Forward.', 50, 62);
+   }
+   else {
+      ctx.clearRect(0, 0, 700, 500);
+      ctx.font = '18px "Times New Roman"';
+      ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+      ctx.fillText('Speed: ' + num + ' mph', 50, 30);
+      ctx.fillText('Direction: ' + dir, 50, 50);
+   }
    return num;
 }
 
@@ -208,25 +252,21 @@ function begin(inputHandler, dashboardItems) {
 
 
 
-   var circ = new Circle(dashShader, 14.5, 0.65, -18.2, 255, 125, 0, 5);
+   circ = new Circle(dashShader, 14.37, 0.70, -18.1, 0, 1, 1, .70);
    _inputHandler.scene.addGeometry(circ);
    dashboardItems.push(circ);
 
 
-   circ = new Circle(dashShader, 14.55, 0.68, -18.1, 255, 255, 0, 1);
-   _inputHandler.scene.addGeometry(circ);
-   dashboardItems.push(circ);
-
-
-   rect = new Rectangle(dashShader, 16.5, 0.5, -18.0, 125, 100, 50, 2);
+   rect = new Rectangle(dashShader, 15.9, 0.37, -18.0, 50, 50, 50, 2);
    _inputHandler.scene.addGeometry(rect);
    dashboardItems.push(rect);
 
-   circ = new Circle(dashShader, 16.75, 0.8, -17.9, 255, 165, 0, 1.0);
+   circ = new Circle(dashShader, 16.15, 0.7, -17.9, 255, 165, 0, 1.0);
    _inputHandler.scene.addGeometry(circ);
    dashboardItems.push(circ);
 
-   rect = new Verticalsquare(dashShader, 17.3, 0.81, -17.8, 255, 0, 0, 0.5);
+   rect = new Verticalsquare(buttonShader, 16.78, 0.70, -17.8, 255, 0, 0, 0.5);
+   rect.on = false;
    _inputHandler.scene.addGeometry(rect);
    dashboardItems.push(rect);
 
@@ -248,18 +288,28 @@ function begin(inputHandler, dashboardItems) {
    var cube = new tiltedCubeFog(shaderFogTest, 0.3, -0.4, -63, 125, 125, 125, 10, null);
    _inputHandler.scene.addGeometry(cube);
 
-   ground = new Square(shaderFogTest, 10, -.4, -23.5, 0, 0, 0, 12);
+   var cube = new tiltedCubeFog(shaderFogTest, 10, -0.4, -73, 125, 125, 125, 12, null);
+   _inputHandler.scene.addGeometry(cube);
+
+   ground = new Square(shaderFogTest, 10, -.6, -23.5, 0, 0, 0, 12);
    _inputHandler.scene.addGeometry(ground);
-   ground = new Square(shaderFogTest, 10, -.4, -33.5, 0, 0, 0, 12);
+   ground = new Square(shaderFogTest, 10, -.6, -33.5, 0, 0, 0, 12);
    _inputHandler.scene.addGeometry(ground);
-   ground = new Square(shaderFogTest, .5, -.4, -33.5, 0, 0, 0, 12);
+   ground = new Square(shaderFogTest, .5, -.6, -33.5, 0, 0, 0, 12);
    _inputHandler.scene.addGeometry(ground);
-   ground = new Square(shaderFogTest, 21, -.4, -33.5, 0, 0, 0, 12);
+   ground = new Square(shaderFogTest, 21, -.6, -33.5, 0, 0, 0, 12);
    _inputHandler.scene.addGeometry(ground);
-   ground = new Square(shaderFogTest, 10, -.4, -43.5, 0, 0, 0, 12);
+   ground = new Square(shaderFogTest, 10, -.6, -43.5, 0, 0, 0, 12);
    _inputHandler.scene.addGeometry(ground);
-   ground = new Square(shaderFogTest, 10, -.4, -53.5, 0, 0, 0, 12);
+   ground = new Square(shaderFogTest, 10, -.6, -53.5, 0, 0, 0, 12);
    _inputHandler.scene.addGeometry(ground);
+   ground = new Square(shaderFogTest, .5, -.6, -53.5, 0, 0, 0, 12);
+   _inputHandler.scene.addGeometry(ground);
+   ground = new Square(shaderFogTest, 21, -.6, -53.5, 0, 0, 0, 12);
+   _inputHandler.scene.addGeometry(ground);
+   ground = new Square(shaderFogTest, 10, -.6, -63.5, 0, 0, 0, 12);
+   _inputHandler.scene.addGeometry(ground);
+
 
    
 
@@ -297,8 +347,8 @@ function addFire(){
 
 
 function addRain(){
-   for (let i = 0; i < 32; i++) {
-      for (let j = 0; j < 32; j++) {
+   for (let i = 0; i < 20; i++) {
+      for (let j = 0; j < 70; j++) {
             rain(i,0,-j)
     
       }
